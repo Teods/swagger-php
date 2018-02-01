@@ -7,10 +7,27 @@ To output:
 ```json
 {
    "openapi": "3.0",
-   "schemes": ["http"],
-   "host": "example.com",
-   "basePath": "/api"
+   "servers": [
+     {
+         "url": "{schemes}://{host}{basePath}",
+         "description": "The production API server",
+         "variables": {
+             "basePath": {
+                 "default": "/v2",
+                 "enum": [
+                     "/v1",
+                     "/v2"
+                 ]
+             },
+             "host": "example.com",
+             "schemes": {
+                 "default": "https"
+             }
+         }
+     }
+ ]
 }
+
 ```
 
 Write:
@@ -18,9 +35,23 @@ Write:
 ```php
 /**
  * @OAS\OpenApi(
- *   schemes={"http"},
- *   host="example.com",
- *   basePath="/api"
+ *  @OAS\Server(
+ *      url={schemes}://{host}{basePath}",
+ *      description="The production API server",
+ *      variables={
+ *          "host": "example.com",
+ *          "schemes": {
+ *              "default": "https"
+ *          },
+ *          "basePath": {
+ *              "default": "/v2",
+ *              "enum": {
+ *                  "/v1",
+ *                  "/v2"
+ *              }
+ *          }
+ *      }
+ *  )
  * )
  */
 ```
